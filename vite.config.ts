@@ -9,8 +9,15 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
+    preview: {
+      port: Number.parseInt(env.PORT, 10),
+      strictPort: true,
+    },
     server: {
-      port: Number.parseInt(env.PUBLIC_PORT, 10) ?? 3000,
+      port: Number.parseInt(env.PORT, 10),
+      strictPort: true,
+      host: true,
+      origin: `http://0.0.0.0:${env.PORT}`,
     },
     resolve: {
       alias: {
@@ -36,6 +43,7 @@ export default defineConfig(({ mode }) => {
         reporter: ["text", "json", "html", "lcov"],
         exclude: [
           "**/html",
+          "**/dist",
           "**/src/app.tsx",
           "**/src/main.tsx",
           "**/vite.config.ts",
