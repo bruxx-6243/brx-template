@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useCounterStore } from "@/store/counter-store";
 
 export const Button = () => {
-  const [count, setCount] = useState<number>(0);
+  const { count, increment } = useCounterStore();
 
   return (
-    <button
-      id="count"
-      onClick={() => setCount((prev) => prev + 1)}
-      className="cursor-pointer rounded-md bg-blue-500 px-4 py-2 text-white"
-    >
-      count - {count}
-    </button>
+    <div>
+      <button
+        id="count"
+        onClick={increment}
+        className="cursor-pointer rounded-md bg-blue-500 px-4 py-2 text-white"
+      >
+        count - {count}
+      </button>
+    </div>
   );
 };

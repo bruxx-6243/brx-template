@@ -4,7 +4,8 @@ import { z } from "zod";
 export const env = createEnv({
   clientPrefix: "PUBLIC_",
   client: {
-    PUBLIC_PORT: z.string().min(1),
+    PUBLIC_PORT: z.string().optional(),
+    PUBLIC_BACKEND_BASE_URL: z.string().optional(),
   },
-  runtimeEnv: process.env,
+  runtimeEnv: import.meta.env,
 });

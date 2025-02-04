@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     server: {
-      port: Number.parseInt(env.PUBLIC_PORT, 10),
+      port: Number.parseInt(env.PUBLIC_PORT, 10) ?? 3000,
     },
     resolve: {
       alias: {
@@ -26,6 +26,11 @@ export default defineConfig(({ mode }) => {
     test: {
       globals: true,
       environment: "jsdom",
+      poolOptions: {
+        forks: {
+          singleFork: true,
+        },
+      },
       coverage: {
         provider: "v8",
         reporter: ["text", "json", "html", "lcov"],
