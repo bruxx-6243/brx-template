@@ -1,11 +1,9 @@
-import { Route } from "@/routes/_authenticated/index";
+import { Button } from "@/components/design/button";
 
 export default function PageComponent() {
-  const { token } = Route.useRouteContext();
-
   return (
     <div>
-      <code className="text-sm">token: {token}</code>;
+      <Button />
     </div>
   );
 }

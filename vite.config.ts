@@ -23,5 +23,31 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       TanStackRouterVite({ autoCodeSplitting: true }),
     ],
+    test: {
+      globals: true,
+      environment: "jsdom",
+      coverage: {
+        provider: "v8",
+        reporter: ["text", "json", "html", "lcov"],
+        exclude: [
+          "**/html",
+          "**/src/app.tsx",
+          "**/src/main.tsx",
+          "**/vite.config.ts",
+          "**/src/router.tsx",
+          "**/src/vite-env.d.ts",
+          "**/custom-pattern/**",
+          "**/src/providers.tsx",
+          "**/postcss.config.ts",
+          "**/_authenticated.tsx",
+          "**/tailwind.config.ts",
+          "**/*.config.{js,ts,cjs}",
+          "**/commitlint.config.cjs",
+          "**/src/routeTree.gen.ts",
+          "**/src/routes/_authenticated",
+          "**/src/routes/__root.tsx",
+        ],
+      },
+    },
   };
 });

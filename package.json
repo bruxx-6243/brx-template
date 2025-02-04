@@ -9,30 +9,38 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
-    "test": "test"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.12.0",
     "@tailwindcss/vite": "^4.0.1",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-router": "^1.99.0",
+    "clsx": "^2.1.1",
     "nuqs": "^2.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.0.1",
     "tailwindcss": "^4.0.1",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.7.1",
-    "@commitlint/config-conventional": "^19.7.1",
+    "@commitlint/cli": "19.7.1",
+    "@commitlint/config-conventional": "19.7.1",
     "@eslint/js": "^9.17.0",
     "@tanstack/eslint-plugin-query": "^5.66.0",
     "@tanstack/router-devtools": "^1.99.0",
     "@tanstack/router-plugin": "^1.99.3",
+    "@testing-library/react": "^16.2.0",
     "@types/node": "^22.12.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitest/coverage-v8": "3.0.5",
+    "@vitest/ui": "^3.0.5",
     "eslint": "^9.19.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
@@ -40,12 +48,14 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
+    "jsdom": "^26.0.0",
     "lint-staged": "^15.4.3",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vitest": "^3.0.5"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -55,5 +65,9 @@
     "**/*.{html,json,css,scss,md,mdx}": [
       "prettier -w"
     ]
+  },
+  "resolutions": {
+    "@commitlint/cli": "19.7.1",
+    "@commitlint/config-conventional": "19.7.1"
   }
 }
