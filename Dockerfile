@@ -20,4 +20,4 @@ FROM installer AS runner
 RUN pnpm build
 
 EXPOSE 8080
-CMD ["pnpm", "run", "dev", "--", "--host"]
+CMD ["pnpm", "run", "dev"]

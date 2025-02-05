@@ -13,9 +13,7 @@
     "test:once": "vitest run",
     "test:ui": "vitest run --ui",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "pnpm exec playwright test",
-    "test:e2e:ui": "pnpm exec playwright test --ui"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.12.0",
@@ -36,7 +34,6 @@
     "@commitlint/cli": "19.7.1",
     "@commitlint/config-conventional": "19.7.1",
     "@eslint/js": "^9.17.0",
-    "@playwright/test": "^1.50.1",
     "@tanstack/eslint-plugin-query": "^5.66.0",
     "@tanstack/router-devtools": "^1.99.0",
     "@tanstack/router-plugin": "^1.99.3",

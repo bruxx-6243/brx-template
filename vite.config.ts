@@ -41,6 +41,7 @@ export default defineConfig(({ mode }) => {
       coverage: {
         provider: "v8",
         reporter: ["text", "json", "html", "lcov"],
+        testMatch: ["unit/**/*.ts", "components/**/*.tsx"],
         exclude: [
           "**/html",
           "**/dist",
@@ -57,8 +58,8 @@ export default defineConfig(({ mode }) => {
           "**/*.config.{js,ts,cjs}",
           "**/commitlint.config.cjs",
           "**/src/routeTree.gen.ts",
-          "**/src/routes/_authenticated",
           "**/src/routes/__root.tsx",
+          "**/src/routes/_authenticated",
         ],
       },
     },

@@ -26,5 +26,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "src/__tests__"],
+  "exclude": ["src/vitest/**/__tests__/*", "src/vitest/**/*"]
 }
