@@ -1,8 +1,9 @@
+import { env } from "@/env";
 import ApiError from "@/lib/api/handlers/api-error";
 import { getAuthToken } from "@/lib/utils";
 
 type HeadersInit = Record<string, string> | [string, string][] | Headers;
-const API_BASE_URL: string = import.meta.env.VITE_BACKEND_API_BASE_URL;
+const API_BASE_URL: string = env.VITE_BACKEND_API_BASE_URL;
 
 export default class ApiService {
   private createHeaders(
