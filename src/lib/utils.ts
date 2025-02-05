@@ -8,3 +8,9 @@ export function cn(...inputs: ClassNameValue[]) {
 export function sum(a: number, b: number) {
   return a + b;
 }
+
+export const getAuthToken = () => {
+  const token = "token";
+
+  return token;
+};

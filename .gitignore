@@ -7,27 +7,103 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build directories
+dist/
+dist-ssr/
+build/
+out/
+target/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+
+# System files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
 # Editor directories and files
-.vscode/*
+.vscode/
 !.vscode/extensions.json
-.idea
-.DS_Store
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
+# Coverage directories
+coverage/
+.nyc_output/
 
-# 
-html
-coverage
+# Miscellaneous
+*.log
+*.lock
+*.pid
+*.seed
+*.pid.lock
+
+# Compiled files
+*.out
+*.class
+*.pyc
+*.pyo
+*.pyd
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Static site generators
+.cache/
+.next/
+.nuxt/
+.sapper/
+.svelte-kit/
+
+# Framework specific
+/.expo/
+.expo-shared/
+.pnp/
+.pnp.js
+__pycache__/
+.cache-loader/
+.parcel-cache/
+.fusebox/
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+.rts2_cache_system/
+.storybook/
+.next/
+.nuxt/
+out/
+.svelte-kit/
+.svelte/
+.sapper/
+.cache/
+.hugo_build.lock
 
 # Playwright
 /test-results/
@@ -35,4 +111,9 @@ coverage
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-.env
+
+# HTML
+html/
+
+# Coverage
+coverage/
