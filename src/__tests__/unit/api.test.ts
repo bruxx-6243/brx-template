@@ -1,18 +1,19 @@
 import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
 
 const BEFORE_ALL_TIMEOUT = 30000;
+const url = "https://jsonplaceholder.typicode.com/posts";
 
 describe("JSONPlaceholder API tests", () => {
   let getResponse: Response;
-  let getBody: Array<{ [key: string]: unknown }>;
   let postResponse: Response;
   let postBody: { [key: string]: unknown };
+  let getBody: Array<{ [key: string]: unknown }>;
 
   beforeAll(async () => {
-    getResponse = await fetch("https://jsonplaceholder.typicode.com/posts");
+    getResponse = await fetch(url);
     getBody = await getResponse.json();
 
-    postResponse = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    postResponse = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
