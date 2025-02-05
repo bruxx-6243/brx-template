@@ -10,14 +10,14 @@ export default defineConfig(({ mode }) => {
 
   return {
     preview: {
-      port: Number.parseInt(env.PORT, 10),
+      port: Number.parseInt(env.VITE_PORT, 10),
       strictPort: true,
     },
     server: {
-      port: Number.parseInt(env.PORT, 10),
+      port: Number.parseInt(env.VITE_PORT, 10),
       strictPort: true,
       host: true,
-      origin: `http://0.0.0.0:${env.PORT}`,
+      origin: `http://0.0.0.0:${env.VITE_PORT}`,
     },
     resolve: {
       alias: {
