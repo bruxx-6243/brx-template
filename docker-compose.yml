@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   sampleproject:
-    image: vitereacttanstacktemplate
+    image: brx-template
     build:
       context: .
       dockerfile: ./Dockerfile

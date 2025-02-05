@@ -1,5 +1,5 @@
 {
-  "name": "template",
+  "name": "brx-template",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -58,15 +58,6 @@
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5",
     "vitest": "^3.0.5"
-  },
-  "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "eslint --max-warnings=0",
-      "prettier --write"
-    ],
-    "**/*.{html,json,css,scss,md,mdx}": [
-      "prettier -w"
-    ]
   },
   "resolutions": {
     "@commitlint/cli": "19.7.1",

@@ -1,26 +1,24 @@
-# Base image with Node and pnpm
 FROM node:20.12.2-alpine3.18 AS base
-WORKDIR /app
+
+# Install pnpm globally
 RUN npm i -g pnpm
 
-# Install dependencies
-FROM base AS dependencies
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
-
-# Build the application
-FROM dependencies AS builder
+# Phase 1
+FROM base AS builder
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk update && apk add --no-cache curl
+# Set working directory
+WORKDIR /app
 COPY . .
+# Add lockfile and package.json's of isolated subworkspace
+FROM builder AS installer
+
+RUN pnpm install
+
+FROM installer AS runner
+
 RUN pnpm build
 
-# Production image
-FROM node:20.12.2-alpine3.18 AS runner
-WORKDIR /app
-
-# Copy built files and node_modules from the builder
-COPY --from=dependencies /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY .env.example .env
-
 EXPOSE 8080
-CMD ["pnpm", "run", "dev"]
+# Start the application
+CMD ["pnpm", "run", "dev", "--", "--host"]

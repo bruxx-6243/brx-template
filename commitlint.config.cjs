@@ -6,6 +6,6 @@ module.exports = {
       "always",
       ["feat", "fix", "docs", "style", "refactor", "test", "chore"],
     ],
-    "subject-case": [0], // Disable subject case checking
+    "subject-case": [0],
   },
 };
