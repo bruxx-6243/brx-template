@@ -9,14 +9,16 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
+    base: "./",
+
     preview: {
-      port: Number.parseInt(env.VITE_PORT, 10),
       strictPort: true,
+      port: Number.parseInt(env.VITE_PORT, 10),
     },
     server: {
-      port: Number.parseInt(env.VITE_PORT, 10),
-      strictPort: true,
       host: true,
+      strictPort: true,
+      port: Number.parseInt(env.VITE_PORT, 10),
       origin: `http://0.0.0.0:${env.VITE_PORT}`,
     },
     resolve: {
