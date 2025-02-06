@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@theme {
+  --color-green: hsl(112.2deg 73.53% 73.33%);
+}
+
+body {
+  @apply bg-green;
+}

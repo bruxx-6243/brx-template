@@ -1,12 +1,9 @@
 import { Button } from "@/components/design/button";
-import { Route } from "@/routes/_authenticated/index";
 
 export default function PageComponent() {
-  const { token } = Route.useRouteContext();
-
   return (
-    <div className="text-center">
-      <code className="mb-3 inline-block">token - {token}</code>
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
+      <h1 className="text-7xl font-bold uppercase">Brx Template</h1>
       <Button />
     </div>
   );
