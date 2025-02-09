@@ -18,8 +18,7 @@ concurrency:
 jobs:
   deploy:
     env:
-      VITE_TEST: ${{ vars.VITE_TEST }}
-      VITE_SECRET_HELLO: ${{ secrets.VITE_SECRET_HELLO }}
+      VITE_PORT: ${{ vars.VITE_PORT }}
 
     environment:
       name: github-pages
