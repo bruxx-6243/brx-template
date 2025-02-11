@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-green: hsl(112.2deg 73.53% 73.33%);
+  --color-background: oklch(13.91% 0.006 354.68);
 }
 
 body {
-  @apply bg-green;
+  @apply bg-background;
 }
