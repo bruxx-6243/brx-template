@@ -24,27 +24,12 @@ module.exports = {
      *   - `refactor`  → Code changes that neither fix a bug nor add a feature
      *   - `test`      → Adding or updating tests
      *   - `chore`     → Maintenance tasks (e.g., dependency updates)
-     *   - `perf`      → Performance improvements
      *   - `ci`        → CI/CD pipeline changes
-     *   - `build`     → Changes to build system or external dependencies
-     *   - `revert`    → Reverts a previous commit
      */
     "type-enum": [
       2,
       "always",
-      [
-        "feat",
-        "fix",
-        "docs",
-        "style",
-        "refactor",
-        "test",
-        "chore",
-        "perf",
-        "ci",
-        "build",
-        "revert",
-      ],
+      ["feat", "fix", "docs", "style", "refactor", "test", "chore", "ci"],
     ],
 
     /**
@@ -67,35 +52,5 @@ module.exports = {
      * - Maintains commit message structure.
      */
     "footer-leading-blank": [2, "always"],
-
-    /**
-     * Enforces lowercase subject.
-     *
-     * - Improves consistency.
-     */
-    "subject-case": [
-      2,
-      "never",
-      ["sentence-case", "start-case", "pascal-case"],
-    ],
-
-    /**
-     * Enforces that the commit subject does not end with a period.
-     */
-    "subject-full-stop": [2, "never", "."],
-
-    /**
-     * Enforces a capitalized commit type.
-     *
-     * - Example: `Feat: Add new feature`
-     */
-    "type-case": [2, "always", "lower-case"],
-
-    /**
-     * Enforces a minimum commit body length.
-     *
-     * - Helps ensure meaningful commit messages.
-     */
-    "body-min-length": [2, "always", 20],
   },
 };
