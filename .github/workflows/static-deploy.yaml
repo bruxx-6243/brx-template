@@ -19,6 +19,7 @@ jobs:
   deploy:
     env:
       VITE_PORT: ${{ vars.VITE_PORT }}
+      VITE_BACKEND_API_BASE_URL: ${{ vars.VITE_BACKEND_API_BASE_URL }}
 
     environment:
       name: github-pages
