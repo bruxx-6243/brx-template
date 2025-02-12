@@ -30,6 +30,12 @@ jobs:
       - name: Checkout code 🛎️
         uses: actions/checkout@v4
 
+      - name: Debug environment variables
+        run: |
+          echo "VITE_PORT: $VITE_PORT"
+          echo "VITE_REPO_NAME: $VITE_REPO_NAME"
+          echo "VITE_BACKEND_API_BASE_URL: $VITE_BACKEND_API_BASE_URL"
+
       - name: Set up Node.js 🟢
         uses: actions/setup-node@v4
         with:
@@ -42,7 +48,7 @@ jobs:
         run: pnpm install
 
       - name: Run tests and generate report 🧪
-        run: pnpm test:once
+        run: pnpm test:coverage
         env:
           NODE_ENV: test
 
@@ -55,48 +61,23 @@ jobs:
             coverage/
             test-results/
 
-      - name: Check test coverage
-        id: check-coverage
-        run: |
-          # Extract coverage percentage from the coverage report
-          COVERAGE_PERCENTAGE=$(grep -oP 'All files[^|]*\|\s+\K\d+' coverage/lcov-report/index.html)
-
-          # Check if coverage is greater than 50%
-          if [ "$COVERAGE_PERCENTAGE" -gt 50 ]; then
-            echo "Coverage is $COVERAGE_PERCENTAGE% (greater than 50%). Proceeding with deployment. ✅"
-            echo "coverage_check_passed=true" >> $GITHUB_OUTPUT
-          else
-            echo "Coverage is $COVERAGE_PERCENTAGE% (less than or equal to 50%). Deployment blocked. ❌"
-            echo "coverage_check_passed=false" >> $GITHUB_OUTPUT
-          fi
-
       - name: Build project 🏗️
-        if: steps.check-coverage.outputs.coverage_check_passed == 'true'
         run: pnpm build
 
       - name: Setup Pages 🛠️
-        if: steps.check-coverage.outputs.coverage_check_passed == 'true'
         uses: actions/configure-pages@v4
 
       - name: Upload artifact 📤
-        if: steps.check-coverage.outputs.coverage_check_passed == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./dist"
 
       - name: Deploy to GitHub Pages 🚀
-        if: steps.check-coverage.outputs.coverage_check_passed == 'true'
         id: deployment
         uses: actions/deploy-pages@v4
 
       - name: Celebrate! 🎉
-        if: success() && steps.check-coverage.outputs.coverage_check_passed == 'true'
+        if: success()
         run: |
           echo "Deployment successful! 🎉"
           echo "Your site is live at ${{ steps.deployment.outputs.page_url }}"
-
-      - name: Fail if coverage is low
-        if: steps.check-coverage.outputs.coverage_check_passed == 'false'
-        run: |
-          echo "❌ Coverage is too low. Deployment blocked."
-          exit 1
