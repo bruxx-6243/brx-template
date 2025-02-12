@@ -24,15 +24,19 @@ export default defineConfig(({ mode }) => {
      * The base public path for the project.
      * "./" is commonly used for projects that don't rely on the root of the server.
      */
-    base: "/brx-template/",
-
+    // base: "/brx-template/",
+    /**
+     * The root directory for the project.
+     * - `src`: The source directory for the project.
+     * - `dist`: The output directory for the project.
+     */
     preview: {
       /**
        * Preview server settings for testing before deployment.
        * - `strictPort: true`: Ensures that the specified port must be available.
        * - `port`: Port number loaded from the environment variables.
        */
-      strictPort: true,
+      // strictPort: true,
       port: Number.parseInt(env.VITE_PORT, 10),
     },
 
