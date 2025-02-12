@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
      * The base public path for the project.
      * "./" is commonly used for projects that don't rely on the root of the server.
      */
-    base: "./",
+    base: "/brx-template/",
 
     preview: {
       /**
