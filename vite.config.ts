@@ -20,19 +20,12 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
+    base: mode === "development" ? "/" : "/brx-template/",
     /**
      * The base public path for the project.
      * "./" is commonly used for projects that don't rely on the root of the server.
      */
-    base: "/brx-template/",
-    build: {
-      outDir: "dist",
-    },
-    /**
-     * The root directory for the project.
-     * - `src`: The source directory for the project.
-     * - `dist`: The output directory for the project.
-     */
+
     preview: {
       /**
        * Preview server settings for testing before deployment.
@@ -53,7 +46,10 @@ export default defineConfig(({ mode }) => {
       host: true,
       strictPort: true,
       port: Number.parseInt(env.VITE_PORT, 10),
-      origin: `http://0.0.0.0:${env.VITE_PORT}`,
+      origin:
+        mode === "development"
+          ? `http://localhost:${env.VITE_PORT}`
+          : `http://localhost:${env.VITE_PORT}/brx-template/`,
     },
 
     resolve: {

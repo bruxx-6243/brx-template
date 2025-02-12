@@ -10,7 +10,11 @@ import { createRouter } from "@tanstack/react-router";
  * @property {Object} context - The global context for the router.
  * @property {string | null} context.token - The authentication token, initialized as `null`.
  */
+
+const basepath = import.meta.env.PROD ? "/brx-template" : "/";
+
 export const router = createRouter({
   routeTree,
   context: { token: null },
+  basepath,
 });
