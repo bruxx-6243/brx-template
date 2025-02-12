@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
-    base: mode === "development" ? "/" : "/brx-template/",
+    base: mode === "development" ? "/" : `/${env.VITE_REPO_NAME}/`,
     /**
      * The base public path for the project.
      * "./" is commonly used for projects that don't rely on the root of the server.
@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
       origin:
         mode === "development"
           ? `http://localhost:${env.VITE_PORT}`
-          : `http://localhost:${env.VITE_PORT}/brx-template/`,
+          : `http://localhost:${env.VITE_PORT}/${env.VITE_REPO_NAME}/`,
     },
 
     resolve: {

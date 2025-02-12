@@ -1,5 +1,6 @@
 import { routeTree } from "@/routeTree.gen";
 import { createRouter } from "@tanstack/react-router";
+import { env } from "./env";
 
 /**
  * Initializes and exports the application's router.
@@ -11,10 +12,10 @@ import { createRouter } from "@tanstack/react-router";
  * @property {string | null} context.token - The authentication token, initialized as `null`.
  */
 
-const basepath = import.meta.env.PROD ? "/brx-template" : "/";
+const basepath = import.meta.env.PROD ? `/${env.VITE_REPO_NAME ?? "/"}` : "/";
 
 export const router = createRouter({
+  basepath,
   routeTree,
   context: { token: null },
-  basepath,
 });

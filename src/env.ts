@@ -17,11 +17,13 @@ export const env = createEnv({
     VITE_PORT: z.string().min(1),
 
     /** The base URL for backend API requests. */
-    VITE_BACKEND_API_BASE_URL: z.string().min(1),
+    VITE_BACKEND_API_BASE_URL: z.optional(z.string().min(1)),
+    VITE_REPO_NAME: z.optional(z.string().min(1)),
   },
 
   runtimeEnv: {
     VITE_PORT: import.meta.env.VITE_PORT,
+    VITE_REPO_NAME: import.meta.env.VITE_REPO_NAME,
     VITE_BACKEND_API_BASE_URL: import.meta.env.VITE_BACKEND_API_BASE_URL,
   },
 
