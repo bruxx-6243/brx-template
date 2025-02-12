@@ -25,6 +25,9 @@ export default defineConfig(({ mode }) => {
      * "./" is commonly used for projects that don't rely on the root of the server.
      */
     base: "/brx-template/",
+    build: {
+      outDir: "dist",
+    },
     /**
      * The root directory for the project.
      * - `src`: The source directory for the project.
