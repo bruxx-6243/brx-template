@@ -48,7 +48,7 @@ jobs:
         run: pnpm install
 
       - name: Run tests and generate report 🧪
-        run: pnpm test:once
+        run: pnpm test:coverage
         env:
           NODE_ENV: test
 
