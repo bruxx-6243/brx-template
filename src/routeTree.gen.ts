@@ -10,136 +10,156 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as AuthenticatedImport } from './routes/_authenticated'
-import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
-import { Route as AuthSignupIndexImport } from './routes/auth/signup/index'
-import { Route as AuthLoginIndexImport } from './routes/auth/login/index'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as AuthenticatedImport } from "./routes/_authenticated";
+import { Route as AuthenticatedIndexImport } from "./routes/_authenticated/index";
+import { Route as AuthSignupIndexImport } from "./routes/auth/signup/index";
+import { Route as AuthLoginIndexImport } from "./routes/auth/login/index";
+import { Route as AuthenticatedPostsIndexImport } from "./routes/_authenticated/posts/index";
 
 // Create/Update Routes
 
 const AuthenticatedRoute = AuthenticatedImport.update({
-  id: '/_authenticated',
+  id: "/_authenticated",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => AuthenticatedRoute,
-} as any)
+} as any);
 
 const AuthSignupIndexRoute = AuthSignupIndexImport.update({
-  id: '/auth/signup/',
-  path: '/auth/signup/',
+  id: "/auth/signup/",
+  path: "/auth/signup/",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AuthLoginIndexRoute = AuthLoginIndexImport.update({
-  id: '/auth/login/',
-  path: '/auth/login/',
+  id: "/auth/login/",
+  path: "/auth/login/",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
+
+const AuthenticatedPostsIndexRoute = AuthenticatedPostsIndexImport.update({
+  id: "/posts/",
+  path: "/posts/",
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthenticatedImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/auth/login/': {
-      id: '/auth/login/'
-      path: '/auth/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/auth/signup/': {
-      id: '/auth/signup/'
-      path: '/auth/signup'
-      fullPath: '/auth/signup'
-      preLoaderRoute: typeof AuthSignupIndexImport
-      parentRoute: typeof rootRoute
-    }
+    "/_authenticated": {
+      id: "/_authenticated";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthenticatedImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_authenticated/": {
+      id: "/_authenticated/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof AuthenticatedIndexImport;
+      parentRoute: typeof AuthenticatedImport;
+    };
+    "/_authenticated/posts/": {
+      id: "/_authenticated/posts/";
+      path: "/posts";
+      fullPath: "/posts";
+      preLoaderRoute: typeof AuthenticatedPostsIndexImport;
+      parentRoute: typeof AuthenticatedImport;
+    };
+    "/auth/login/": {
+      id: "/auth/login/";
+      path: "/auth/login";
+      fullPath: "/auth/login";
+      preLoaderRoute: typeof AuthLoginIndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/auth/signup/": {
+      id: "/auth/signup/";
+      path: "/auth/signup";
+      fullPath: "/auth/signup";
+      preLoaderRoute: typeof AuthSignupIndexImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
 // Create and export the route tree
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute;
+  AuthenticatedPostsIndexRoute: typeof AuthenticatedPostsIndexRoute;
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
-}
+  AuthenticatedPostsIndexRoute: AuthenticatedPostsIndexRoute,
+};
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
-)
+);
 
 export interface FileRoutesByFullPath {
-  '': typeof AuthenticatedRouteWithChildren
-  '/': typeof AuthenticatedIndexRoute
-  '/auth/login': typeof AuthLoginIndexRoute
-  '/auth/signup': typeof AuthSignupIndexRoute
+  "": typeof AuthenticatedRouteWithChildren;
+  "/": typeof AuthenticatedIndexRoute;
+  "/posts": typeof AuthenticatedPostsIndexRoute;
+  "/auth/login": typeof AuthLoginIndexRoute;
+  "/auth/signup": typeof AuthSignupIndexRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof AuthenticatedIndexRoute
-  '/auth/login': typeof AuthLoginIndexRoute
-  '/auth/signup': typeof AuthSignupIndexRoute
+  "/": typeof AuthenticatedIndexRoute;
+  "/posts": typeof AuthenticatedPostsIndexRoute;
+  "/auth/login": typeof AuthLoginIndexRoute;
+  "/auth/signup": typeof AuthSignupIndexRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/_authenticated/': typeof AuthenticatedIndexRoute
-  '/auth/login/': typeof AuthLoginIndexRoute
-  '/auth/signup/': typeof AuthSignupIndexRoute
+  __root__: typeof rootRoute;
+  "/_authenticated": typeof AuthenticatedRouteWithChildren;
+  "/_authenticated/": typeof AuthenticatedIndexRoute;
+  "/_authenticated/posts/": typeof AuthenticatedPostsIndexRoute;
+  "/auth/login/": typeof AuthLoginIndexRoute;
+  "/auth/signup/": typeof AuthSignupIndexRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/' | '/auth/login' | '/auth/signup'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth/login' | '/auth/signup'
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: "" | "/" | "/posts" | "/auth/login" | "/auth/signup";
+  fileRoutesByTo: FileRoutesByTo;
+  to: "/" | "/posts" | "/auth/login" | "/auth/signup";
   id:
-    | '__root__'
-    | '/_authenticated'
-    | '/_authenticated/'
-    | '/auth/login/'
-    | '/auth/signup/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/_authenticated"
+    | "/_authenticated/"
+    | "/_authenticated/posts/"
+    | "/auth/login/"
+    | "/auth/signup/";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  AuthLoginIndexRoute: typeof AuthLoginIndexRoute
-  AuthSignupIndexRoute: typeof AuthSignupIndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren;
+  AuthLoginIndexRoute: typeof AuthLoginIndexRoute;
+  AuthSignupIndexRoute: typeof AuthSignupIndexRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AuthLoginIndexRoute: AuthLoginIndexRoute,
   AuthSignupIndexRoute: AuthSignupIndexRoute,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -155,11 +175,16 @@ export const routeTree = rootRoute
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
-        "/_authenticated/"
+        "/_authenticated/",
+        "/_authenticated/posts/"
       ]
     },
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/posts/": {
+      "filePath": "_authenticated/posts/index.tsx",
       "parent": "/_authenticated"
     },
     "/auth/login/": {

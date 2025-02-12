@@ -1,5 +1,6 @@
 import { Button } from "@/components/design/button";
 import { MorphingText } from "@/components/design/morphing-text";
+import { Link } from "@tanstack/react-router";
 
 const stack = [
   "React",
@@ -22,6 +23,10 @@ export default function PageComponent() {
       <div className="text-neutral-200">
         start editing <code>src/components/home/page.tsx</code> to see changes
       </div>
+
+      <Link to="/posts" className="text-white underline">
+        Posts
+      </Link>
     </div>
   );
 }
