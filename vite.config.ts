@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
        * - `strictPort: true`: Ensures that the specified port must be available.
        * - `port`: Port number loaded from the environment variables.
        */
-      // strictPort: true,
+      strictPort: true,
       port: Number.parseInt(env.VITE_PORT, 10),
     },
 

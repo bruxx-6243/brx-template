@@ -18,6 +18,8 @@ export const env = createEnv({
 
     /** The base URL for backend API requests. */
     VITE_BACKEND_API_BASE_URL: z.optional(z.string().min(1)),
+
+    /** The repository name for the client application. */
     VITE_REPO_NAME: z.optional(z.string().min(1)),
   },
 

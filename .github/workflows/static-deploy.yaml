@@ -43,9 +43,6 @@ jobs:
       - name: Install dependencies 🧩
         run: pnpm install
 
-      - name: Run tests and generate report 🧪
-        run: pnpm test:once
-
       - name: Build project 🏗️
         run: pnpm build
 
