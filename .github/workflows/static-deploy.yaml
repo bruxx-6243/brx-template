@@ -45,17 +45,6 @@ jobs:
 
       - name: Run tests and generate report 🧪
         run: pnpm test:coverage
-        env:
-          NODE_ENV: test
-
-      - name: Upload test report 📄
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-report
-          path: |
-            coverage/
-            test-results/
 
       - name: Build project 🏗️
         run: pnpm build
