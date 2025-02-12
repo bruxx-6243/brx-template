@@ -1,10 +1,12 @@
-version: "3.4"
+version: "3.4" # Version of the Docker Compose file format
 
 services:
-  brx-template-react:
-    image: brx-template
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+  brx-template-react: # Name of the service (container)
+    image: brx-template # The image to use for this container (can be a pre-built image or a custom one)
+
+    build: # Configuration for building the image from the Dockerfile
+      context: . # Path to the build context (current directory in this case)
+      dockerfile: ./Dockerfile # Path to the Dockerfile to use for building the image
+
     ports:
-      - 8080:8080
+      - "8080:8080" # Expose container port 8080 to the host on port 8080 (for local access)
