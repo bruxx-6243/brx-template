@@ -28,7 +28,7 @@ export default class ApiService {
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
     url: string,
     headers: HeadersInit = {},
-    body?: Record<string, unknown>,
+    body?: Record<string, unknown> | FormData,
     customErrorMessage?: string,
     byPass = false,
   ): Promise<T> {
@@ -42,6 +42,8 @@ export default class ApiService {
         options.body = body;
       } else {
         options.body = JSON.stringify(body);
+        (options.headers as Record<string, string>)["Content-Type"] =
+          "application/json";
       }
     }
 
@@ -49,26 +51,40 @@ export default class ApiService {
 
     if (!response.ok) {
       const errorBody = await response.json().catch(() => ({}));
+      const backendErrorMessage =
+        errorBody.message ||
+        errorBody.error ||
+        errorBody.detail ||
+        "Unknown error";
 
-      throw new ApiError(
-        customErrorMessage ?? "HTTP Error",
-        response.status,
-        errorBody,
-        response,
-      );
+      const errorMessage = customErrorMessage ?? backendErrorMessage;
+
+      throw new ApiError(errorMessage, response.status, errorBody, response);
     }
 
     return response.json() as Promise<T>;
   }
 
-  get<T>(url: string, headers: HeadersInit = {}, byPass = false): Promise<T> {
-    return this.request("GET", url, headers, undefined, undefined, byPass);
+  get<T>(
+    url: string,
+    headers: HeadersInit = {},
+    customErrorMessage?: string,
+    byPass = false,
+  ): Promise<T> {
+    return this.request(
+      "GET",
+      url,
+      headers,
+      undefined,
+      customErrorMessage,
+      byPass,
+    );
   }
 
   post<T>(
     url: string,
     headers: HeadersInit = {},
-    body?: Record<string, unknown>,
+    body?: Record<string, unknown> | FormData,
     customErrorMessage?: string,
     byPass = false,
   ): Promise<T> {
@@ -78,7 +94,7 @@ export default class ApiService {
   put<T>(
     url: string,
     headers: HeadersInit = {},
-    body?: Record<string, unknown>,
+    body?: Record<string, unknown> | FormData,
     customErrorMessage?: string,
     byPass = false,
   ): Promise<T> {
@@ -88,7 +104,7 @@ export default class ApiService {
   patch<T>(
     url: string,
     headers: HeadersInit = {},
-    body?: Record<string, unknown>,
+    body?: Record<string, unknown> | FormData,
     customErrorMessage?: string,
     byPass = false,
   ): Promise<T> {
