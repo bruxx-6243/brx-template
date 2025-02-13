@@ -14,7 +14,7 @@ export default class PostController extends BaseController {
         query.append("_limit", String(limit));
       }
 
-      return await this.apiService.get<Posts>(`/posts?${query}`);
+      return await this.apiService.get<Posts>(`/pposts?${query}`);
     } catch (error) {
       this.handleError(error);
     }
