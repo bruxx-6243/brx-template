@@ -1,8 +1,10 @@
+<img height="50" src="https://www.fariolblondeau.dev/_vercel/image?url=_astro%2Fhashcode-logo.BSY7U9ff.png&w=640&q=80" alt="javascript">
+
 # BRX TEMPLATE - Boilerplate for Modern Development 🚀
 
 ## Introduction
 
-BRX TEMPLATE is a boilerplate designed to accelerate the setup of a modern React project. The idea for this template came from the fact that there wasn’t an existing boilerplate that included a fully configured and optimized environment for fast and efficient development.
+`BRX TEMPLATE` is a boilerplate designed to accelerate the setup of a modern React project. The idea for this template came from the fact that there wasn’t an existing boilerplate that included a fully configured and optimized environment for fast and efficient development.
 
 Every time I started a new project, I would spend hours, sometimes even days, just setting up the environment before writing a single line of code. Additionally, deploying with Docker and setting up CI/CD took a considerable amount of time.
 
@@ -109,8 +111,18 @@ project-name/
    ```
 
 2. **Create a new BRX project**
+
    ```sh
    npx create-brx-app
+   ```
+
+3. **Run the project locally**
+   ```sh
+   [package manager] dev or run dev
+   ```
+4. **Build the project**
+   ```sh
+   [package manager] build or run build
    ```
 
 ## 🚀 Deployment with Docker
@@ -135,3 +147,7 @@ To deploy the application in a Docker container:
    ```
 
 ---
+
+## 🤝 Contributing
+
+We welcome contributions! If you’d like to contribute to `BRX TEMPLATE`, please submit a pull request or open an issue.
