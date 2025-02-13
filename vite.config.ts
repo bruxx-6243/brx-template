@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
       origin:
         mode === "development"
           ? `http://localhost:${env.VITE_PORT}`
-          : `http://localhost:${env.VITE_PORT}/${env.VITE_REPO_NAME}/`,
+          : `http://localhost:${env.VITE_PORT}/${env.VITE_REPO_NAME}`,
     },
 
     resolve: {
