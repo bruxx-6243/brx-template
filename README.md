@@ -102,6 +102,8 @@ project-name/
 │── postcss.config.ts    # PostCSS configuration
 ```
 
+![The CLI screenShot](cli.png)
+
 ## ⚡ Installation & Getting Started
 
 1. **Install the CLI globally**
