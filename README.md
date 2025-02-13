@@ -134,18 +134,18 @@ To deploy the application in a Docker container:
 1. **Build the container**
 
    ```sh
-   [package-manager] docker:build
+   docker build . -t "<container-name>"
    ```
 
 2. **Start the container**
 
    ```sh
-   [package manager] docker-compose:start
+    docker-compose up -d
    ```
 
 3. **Stop the container**
    ```sh
-   [package manager] docker-compose:stop
+    docker-compose down
    ```
 
 ---

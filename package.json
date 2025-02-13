@@ -13,10 +13,7 @@
     "test:once": "vitest run",
     "test:ui": "vitest --ui",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest run --coverage",
-    "docker:build": "docker build . -t 'brx-template'",
-    "docker-compose:start": "docker-compose up -d",
-    "docker-compose:stop": "docker-compose down"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.12.0",
