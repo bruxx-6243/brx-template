@@ -9,13 +9,11 @@ export default function PageComponent() {
     parseAsInteger.withDefault(1),
   );
 
-  const postMethod = createMethod({
+  const { data, error, isLoading } = createMethod({
     type: "query",
     key: ["posts", limit],
     fn: () => getAllPosts({ limit }),
   }).useHook();
-
-  const { data: posts, error, isLoading } = postMethod;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-14">
@@ -37,7 +35,7 @@ export default function PageComponent() {
       {error && <div className="text-red-500">{error.message}</div>}
 
       <ul className="flex flex-col gap-4 text-white">
-        {posts?.map((post) => (
+        {data?.map((post) => (
           <li key={post.id} className="flex flex-col space-y-2">
             <span className="inline-block text-xl font-semibold text-amber-300">
               {post.id} - {post.title}
