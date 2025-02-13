@@ -9,7 +9,7 @@ export default function PageComponent() {
     parseAsInteger.withDefault(1),
   );
 
-  const { data, error, isLoading } = createMethod({
+  const { data, isLoading, error } = createMethod({
     type: "query",
     key: ["posts", limit],
     fn: () => getAllPosts({ limit }),
