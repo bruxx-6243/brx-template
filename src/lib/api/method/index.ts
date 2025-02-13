@@ -116,7 +116,11 @@ const createMethod = <
        * @returns {object} Contains `data`, `isLoading`, `error`, and `mutate`.
        */
       useHook: () => {
-        const { data, isPending, error, mutate } = useMutation<T, Error, V>({
+        const { data, isPending, error, mutate, mutateAsync } = useMutation<
+          T,
+          Error,
+          V
+        >({
           mutationKey: Array.isArray(key) ? key : [key],
           mutationFn: async (variables) => {
             const result = await mutationFn(variables);
@@ -125,7 +129,7 @@ const createMethod = <
           ...(options as UseMutationOptions<T, Error, V>),
         });
 
-        return { data, isLoading: isPending, error, mutate };
+        return { data, isLoading: isPending, error, mutate, mutateAsync };
       },
     };
   }
