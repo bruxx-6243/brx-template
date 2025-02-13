@@ -148,8 +148,6 @@ To deploy the application in a Docker container:
     docker-compose down
    ```
 
----
-
 ## 🤝 Contributing
 
 We welcome contributions! If you’d like to contribute to `BRX TEMPLATE`, please submit a pull request or open an issue.
