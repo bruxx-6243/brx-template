@@ -16,7 +16,7 @@ const stack = [
 
 export default function PageComponent() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6 p-4">
       <MorphingText texts={stack} className="text-white" />
       <Button />
 

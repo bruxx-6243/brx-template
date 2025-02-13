@@ -1,14 +1,20 @@
 import BaseController from "@/lib/api/handlers/base-controller";
-import { Posts } from "@/types";
+import type { Posts } from "@/types";
 
 export default class PostController extends BaseController {
   constructor() {
     super();
   }
 
-  async getAllPosts({ limit = 10 }: { limit?: number }) {
+  async getAllPosts({ limit }: { limit?: number }) {
     try {
-      return await this.apiService.get<Posts>(`/posts?_limit=${limit}`);
+      const query = new URLSearchParams();
+
+      if (limit) {
+        query.append("_limit", String(limit));
+      }
+
+      return await this.apiService.get<Posts>(`/posts?${query}`);
     } catch (error) {
       this.handleError(error);
     }

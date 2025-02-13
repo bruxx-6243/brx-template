@@ -18,7 +18,7 @@ export default function PageComponent() {
   const { data: posts, error, isLoading } = postMethod;
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 py-14">
+    <div className="mx-auto max-w-7xl space-y-6 px-4 py-14">
       <div className="flex flex-col gap-2">
         <label htmlFor="limit" className="text-white">
           change the limit
