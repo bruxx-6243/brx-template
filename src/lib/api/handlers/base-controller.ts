@@ -23,7 +23,7 @@ export default class BaseController {
    */
   protected handleError(error: unknown): never {
     if (error instanceof ApiError) {
-      console.error(error.message);
+      throw new Error(error.getErrorMessage());
     }
 
     throw error;

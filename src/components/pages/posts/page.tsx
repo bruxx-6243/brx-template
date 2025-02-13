@@ -6,7 +6,7 @@ import { parseAsInteger, useQueryState } from "nuqs";
 export default function PageComponent() {
   const [limit, setlimit] = useQueryState(
     "limit",
-    parseAsInteger.withDefault(5),
+    parseAsInteger.withDefault(1),
   );
 
   const postMethod = createMethod({
@@ -20,8 +20,8 @@ export default function PageComponent() {
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-14">
       <div className="flex flex-col gap-2">
-        <label htmlFor="limit" className="text-white">
-          change the limit
+        <label htmlFor="limit" className="text-lg text-white">
+          Change the limit
         </label>
         <input
           id="limit"
@@ -34,7 +34,7 @@ export default function PageComponent() {
 
       {isLoading && <div className="text-white">Loading...</div>}
 
-      {error && <div className="text-white">Error: {error.message}</div>}
+      {error && <div className="text-red-500">{error.message}</div>}
 
       <ul className="flex flex-col gap-4 text-white">
         {posts?.map((post) => (
