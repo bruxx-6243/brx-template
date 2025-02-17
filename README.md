@@ -1,5 +1,3 @@
-<img height="50" src="https://www.fariolblondeau.dev/_vercel/image?url=_astro%2Fhashcode-logo.BSY7U9ff.png&w=640&q=80" alt="javascript">
-
 # BRX TEMPLATE - Boilerplate for Modern Development 🚀
 
 ## Introduction
@@ -102,51 +100,62 @@ project-name/
 │── postcss.config.ts    # PostCSS configuration
 ```
 
-![The CLI screenShot](cli.png)
+## 📄 Creating a Page
 
-## ⚡ Installation & Getting Started
+To create a page, navigate to the `/src/routes/_authenticated` folder and create a new directory for your route. Inside that directory, create an `index.tsx` file. By default, TanStack will generate a page for you, which you can modify as needed. For example:
 
-1. **Install the CLI globally**
+```tsx
+import AppLayout from "@/components/layouts/app-layout";
+import PageComponent from "@/components/pages/posts/page";
+import { createFileRoute } from "@tanstack/react-router";
 
-   ```sh
-   npm install -g @bruxx/cli-tool
-   ```
+export const Route = createFileRoute("/_authenticated/posts/")({
+  component: RouteComponent,
+});
 
-2. **Create a new BRX project**
+function RouteComponent() {
+  return (
+    <AppLayout>
+      <PageComponent />
+    </AppLayout>
+  );
+}
+```
 
-   ```sh
-   npx create-brx-app
-   ```
+## 🌐 Making an API Call
 
-3. **Run the project locally**
-   ```sh
-   [package manager] dev or run dev
-   ```
-4. **Build the project**
-   ```sh
-   [package manager] build or run build
-   ```
+Making API calls is very simple thanks to BRX's configuration. Just go to the `src/lib/api/controller/` folder and create a controller to manage different API calls. Here's an example:
 
-## 🚀 Deployment with Docker
+```ts
+import BaseController from "@/lib/api/handlers/base-controller";
+import type { Posts } from "@/types";
 
-To deploy the application in a Docker container:
+export default class PostController extends BaseController {
+  constructor() {
+    super();
+  }
 
-1. **Build the container**
+  async getAllPosts({ limit }: { limit?: number }) {
+    try {
+      const query = new URLSearchParams();
 
-   ```sh
-   docker build . -t "<container-name>"
-   ```
+      if (limit) {
+        query.append("_limit", String(limit));
+      }
 
-2. **Start the container**
+      return await this.apiService.get<Posts>(`/posts?${query}`);
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+}
 
-   ```sh
-    docker-compose up -d
-   ```
+export const { getAllPosts } = new PostController();
+```
 
-3. **Stop the container**
-   ```sh
-    docker-compose down
-   ```
+## 🔐 Authentication
+
+If your application has authentication, make sure to add your authentication logic and store the token for use in future requests. To protect your app, add the token verification logic inside the `/src/routes/_authenticated` folder, which will act as middleware and mount for every request you make.
 
 ## 🤝 Contributing
 
