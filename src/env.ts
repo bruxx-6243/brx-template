@@ -14,10 +14,10 @@ export const env = createEnv({
 
   client: {
     /** The port on which the client application runs. */
-    VITE_PORT: z.string().min(1),
+    VITE_PORT: z.coerce.number().default(8080),
 
     /** The base URL for backend API requests. */
-    VITE_BACKEND_API_BASE_URL: z.string().optional(),
+    VITE_BACKEND_API_BASE_URL: z.string().url(),
 
     /** The repository name for the client application. */
     VITE_REPO_NAME: z.string().optional(),
@@ -29,5 +29,5 @@ export const env = createEnv({
     VITE_BACKEND_API_BASE_URL: import.meta.env.VITE_BACKEND_API_BASE_URL,
   },
 
-  emptyStringAsUndefined: true, // Converts empty strings to `undefined`
+  emptyStringAsUndefined: true,
 });

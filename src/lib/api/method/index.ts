@@ -4,137 +4,145 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
+
 import { ZodTypeAny } from "zod";
 
+/**
+ * Type definition for a function that returns a promise of a specific type.
+ * @template T The type of the data returned from the query.
+ */
 type QueryFunction<T> = () => Promise<T>;
+
+/**
+ * Type definition for a function that accepts variables and returns a promise of a specific type.
+ * @template T The type of the data returned from the mutation.
+ * @template V The type of the variables passed to the mutation function.
+ */
 type MutationFunction<T, V> = (variables: V) => Promise<T>;
 
 /**
- * Options for creating a query or mutation method.
- *
- * @template T The expected return type of the query/mutation.
- * @template V The type of variables for mutations (if applicable).
- * @template S The Zod schema for type validation (optional).
+ * Options for creating a query method.
+ * @template T The type of the data returned from the query.
+ * @template S The optional Zod schema used to validate the query result.
  */
-type CreateMethodOptions<
+type CreateQueryOptions<T, S extends ZodTypeAny | undefined = undefined> = {
+  /**
+   * An optional Zod schema used for validation of the query result.
+   */
+  schema?: S;
+  /**
+   * The key used to identify the query.
+   */
+  key: string | unknown[];
+  /**
+   * The function that performs the query.
+   */
+  fn: QueryFunction<T>;
+  /**
+   * Additional options for the query, such as caching, retries, etc.
+   */
+  options?: UseQueryOptions<T, Error>;
+};
+
+/**
+ * Options for creating a mutation method.
+ * @template T The type of the data returned from the mutation.
+ * @template V The type of the variables passed to the mutation function.
+ * @template S The optional Zod schema used to validate the mutation result.
+ */
+type CreateMutationOptions<
   T,
   V = void,
   S extends ZodTypeAny | undefined = undefined,
 > = {
-  /** Optional Zod schema for validating API responses. */
+  /**
+   * An optional Zod schema used for validation of the mutation result.
+   */
   schema?: S;
-  /** Query/mutation key used by React Query for caching. */
+  /**
+   * The key used to identify the mutation.
+   */
   key: string | unknown[];
-  /** Defines whether this method is a query or a mutation. */
-  type: "query" | "mutation";
-  /** Function that fetches data for queries or handles mutations. */
-  fn: QueryFunction<T> | MutationFunction<T, V>;
-  /** React Query options for customizing query/mutation behavior. */
-  options?: UseQueryOptions<T> | UseMutationOptions<T, Error, V>;
+  /**
+   * The function that performs the mutation.
+   */
+  fn: MutationFunction<T, V>;
+  /**
+   * Additional options for the mutation, such as error handling, retries, etc.
+   */
+  options?: UseMutationOptions<T, Error, V>;
 };
 
 /**
- * Creates a reusable React Query hook for fetching (queries) or updating (mutations) data.
+ * Creates a query method using React Query's `useQuery` hook.
  *
- * - For queries, it ensures type safety by validating responses against an optional Zod schema.
- * - For mutations, it allows flexible API interaction with React Query’s mutation system.
+ * @template T The type of the data returned from the query.
+ * @template S The optional Zod schema used to validate the query result.
  *
- * @template T The expected return type of the query/mutation.
- * @template V The type of mutation variables.
- * @template S The optional Zod schema used for validation.
- *
- * @param {CreateMethodOptions<T, V, S>} options Configuration options for the query/mutation.
- * @returns An object with a `useHook` function to be used inside components.
- *
- * @example
- * ```ts
- * import { z } from "zod";
- *
- * const userSchema = z.object({
- *   id: z.number(),
- *   name: z.string(),
- * });
- *
- * const fetchUser = async (): Promise<{ id: number; name: string }> => {
- *   return { id: 1, name: "Alice" };
- * };
- *
- * const userMethod = createMethod({
- *   type: "query",
- *   key: "user",
- *   fn: fetchUser,
- *   schema: userSchema,
- * });
- *
- * const { useHook } = userMethod;
- * const { data, isLoading, error } = useHook();
- * ```
+ * @param options The options to configure the query method.
+ * @returns An object containing a hook to be used in a component.
  */
-const createMethod = <
+const createQueryMethod = <T, S extends ZodTypeAny | undefined = undefined>({
+  schema,
+  key,
+  fn,
+  options,
+}: CreateQueryOptions<T, S>) => {
+  return {
+    /**
+     * A hook for executing the query with automatic validation.
+     *
+     * @returns The result of the `useQuery` hook.
+     */
+    useHook: () =>
+      useQuery({
+        queryKey: Array.isArray(key) ? key : [key],
+        queryFn: async () => {
+          const result = await fn();
+
+          return schema ? schema.parse(result) : result;
+        },
+        ...options,
+      }),
+  };
+};
+
+/**
+ * Creates a mutation method using React Query's `useMutation` hook.
+ *
+ * @template T The type of the data returned from the mutation.
+ * @template V The type of the variables passed to the mutation function.
+ * @template S The optional Zod schema used to validate the mutation result.
+ *
+ * @param options The options to configure the mutation method.
+ * @returns An object containing a hook to be used in a component.
+ */
+const createMutationMethod = <
   T,
   V = void,
   S extends ZodTypeAny | undefined = undefined,
 >({
-  type,
+  schema,
   key,
   fn,
-  schema,
   options,
-}: CreateMethodOptions<T, V, S>) => {
-  if (type === "query") {
-    const queryFn = fn as QueryFunction<T>;
-
-    /** The inferred schema type if validation is provided. */
-    type SchemaType = S extends ZodTypeAny ? S["_type"] : T;
-
-    return {
-      /**
-       * Custom React Query hook for fetching data.
-       * @returns {object} Contains `data`, `isLoading`, and `error`.
-       */
-      useHook: () => {
-        const { data, isLoading, error } = useQuery<SchemaType, Error>({
-          queryKey: Array.isArray(key) ? key : [key],
-          queryFn: async () => {
-            const result = await queryFn();
-            return schema ? schema.parse(result) : (result as SchemaType);
-          },
-          ...(options && ({ ...options } as UseQueryOptions<SchemaType>)),
-        });
-
-        return { data, isLoading, error };
-      },
-    };
-  }
-
-  if (type === "mutation") {
-    const mutationFn = fn as MutationFunction<T, V>;
-
-    return {
-      /**
-       * Custom React Query hook for mutations.
-       * @returns {object} Contains `data`, `isLoading`, `error`, and `mutate`.
-       */
-      useHook: () => {
-        const { data, isPending, error, mutate, mutateAsync } = useMutation<
-          T,
-          Error,
-          V
-        >({
-          mutationKey: Array.isArray(key) ? key : [key],
-          mutationFn: async (variables) => {
-            const result = await mutationFn(variables);
-            return schema ? schema.parse(result) : result;
-          },
-          ...(options as UseMutationOptions<T, Error, V>),
-        });
-
-        return { data, isLoading: isPending, error, mutate, mutateAsync };
-      },
-    };
-  }
-
-  throw new Error(`Invalid type: ${type}`);
+}: CreateMutationOptions<T, V, S>) => {
+  return {
+    /**
+     * A hook for executing the mutation with automatic validation.
+     *
+     * @returns The result of the `useMutation` hook.
+     */
+    useHook: () =>
+      useMutation({
+        mutationKey: Array.isArray(key) ? key : [key],
+        mutationFn: async (variables) => {
+          const result = await fn(variables);
+          return schema ? schema.parse(result) : result;
+        },
+        ...options,
+      }),
+  };
 };
 
-export default createMethod;
+export { createMutationMethod, createQueryMethod };

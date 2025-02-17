@@ -1,18 +1,19 @@
 import { getAllPosts } from "@/lib/api/controllers/post-controller";
-import createMethod from "@/lib/api/method";
+import { createQueryMethod } from "@/lib/api/method";
 import { Link } from "@tanstack/react-router";
 import { parseAsInteger, useQueryState } from "nuqs";
 
 export default function PageComponent() {
-  const [limit, setlimit] = useQueryState(
+  const [limit, setLimit] = useQueryState(
     "limit",
     parseAsInteger.withDefault(1),
   );
 
-  const { data, isLoading, error } = createMethod({
-    type: "query",
+  const { data, isLoading, error } = createQueryMethod({
     key: ["posts", limit],
-    fn: () => getAllPosts({ limit }),
+    fn: async () => {
+      return await getAllPosts({ limit });
+    },
   }).useHook();
 
   return (
@@ -26,12 +27,11 @@ export default function PageComponent() {
           type="number"
           value={limit}
           className="max-w-12 bg-white px-2 text-black"
-          onChange={(e) => setlimit(Number.parseInt(e.target.value, 10))}
+          onChange={(e) => setLimit(Number.parseInt(e.target.value, 10))}
         />
       </div>
 
       {isLoading && <div className="text-white">Loading...</div>}
-
       {error && <div className="text-red-500">{error.message}</div>}
 
       <ul className="flex flex-col gap-4 text-white">
