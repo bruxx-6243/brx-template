@@ -90,13 +90,11 @@ project-name/
 │── .nvmrc               # Node version configuration
 │── .prettierrc          # Prettier configuration
 │── commitlint.config.cjs # Commitlint configuration
-│── debug.log            # Debug logs
 │── docker-compose.yml   # Docker Compose configuration
 │── Dockerfile           # Docker configuration
 │── eslint.config.js     # ESLint configuration
 │── index.html           # Main HTML file
 │── package.json         # Dependencies and scripts
-│── pnpm-lock.yaml       # Lockfile for dependencies
 │── postcss.config.ts    # PostCSS configuration
 ```
 
@@ -151,6 +149,41 @@ export default class PostController extends BaseController {
 }
 
 export const { getAllPosts } = new PostController();
+```
+
+All methods in the PostController can be used throughout your application.
+
+To retrieve data returned by the getAllPosts function, you can use TanStack's methods like `createQueryMethod` and `createMutationMethod` to easily handle query and mutation calls. For example:
+
+```ts
+const { data, isLoading, error } = createQueryMethod({
+  key: ["posts", limit],
+  fn: async () => {
+    return await getAllPosts({ limit });
+  },
+}).useHook();
+```
+
+For performing mutations, you can use a similar approach:
+
+```ts
+const createUserMutation = createMutationMethod({
+  key: "create-user",
+  schema: userSchema,
+  fn: async (variables: { id: number; name: string }) => {
+    await new Promise((r) => setTimeout(r, 2000));
+
+    return { id: variables.id, name: variables.name };
+  },
+  options: {
+    onSuccess: ({ name }) => {
+      toast.success(`The user ${name} was created`);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  },
+}).useHook();
 ```
 
 ## 🔐 Authentication
