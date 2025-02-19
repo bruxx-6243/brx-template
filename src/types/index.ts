@@ -7,5 +7,5 @@ export const PostSchema = z.object({
   body: z.string(),
 });
 
-export const PostsArraySchema = z.array(PostSchema);
-export type Posts = z.infer<typeof PostsArraySchema>;
+export const PostsSchema = z.array(PostSchema);
+export type Posts = z.infer<typeof PostsSchema>;
