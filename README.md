@@ -55,6 +55,20 @@ BRX TEMPLATE uses a combination of the best tools for modern and scalable develo
 - **Husky**: Git hooks to automate tasks.
 - **T3-env**: Environment variable management.
 
+### Installation
+
+First, install the BRUXX CLI package globally using npm:
+
+```bash
+npm install -g @bruxx/cli
+```
+
+Once the CLI is installed, create your new project by running:
+
+```bash
+npx create-brx-app
+```
+
 ## 📂 Project Structure
 
 The following is the folder structure of the BRX TEMPLATE boilerplate:
