@@ -45,4 +45,4 @@ EXPOSE 8080
 ENV VITE_PORT=8080
 
 # Start the application
-CMD ["pnpm", "dev"]
+CMD ["pnpm", "preview"]
