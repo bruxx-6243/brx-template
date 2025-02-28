@@ -26,7 +26,11 @@ export default class BaseController {
    * @param {boolean} byPass - If true, bypasses authentication; if false, requires a token.
    */
   constructor(byPass: boolean, token: string | null = null) {
-    this.apiService = new ApiService(API_BASE_URL, token, byPass);
+    const isTest =
+      import.meta.env.MODE === "test" || process.env.NODE_ENV === "test";
+    const baseUrl = isTest ? "" : API_BASE_URL;
+
+    this.apiService = new ApiService(baseUrl, token, byPass);
 
     Object.getOwnPropertyNames(Object.getPrototypeOf(this))
       // @ts-expect-error HACK: this warning can be ignored
