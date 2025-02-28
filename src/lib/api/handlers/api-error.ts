@@ -9,13 +9,13 @@ export default class ApiError extends Error {
    * @param {string} message - A human-readable error message.
    * @param {number} statusCode - The HTTP status code associated with the error.
    * @param {Record<string, unknown> | undefined} body - The optional response body containing additional error details.
-   * @param {Response} response - The original `Response` object from the fetch request.
+   * @param {Response | null} [response] - The optional original `Response` object from the fetch request.
    */
   constructor(
     public message: string,
     public statusCode: number,
     public body: Record<string, unknown> | undefined,
-    public response: Response,
+    public response: Response | null = null, // Made optional with default null
   ) {
     super(message);
     this.name = "ApiError";

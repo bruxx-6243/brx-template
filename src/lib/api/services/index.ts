@@ -1,38 +1,49 @@
-import { env } from "@/env";
-import { getAuthToken } from "@/lib/utils";
 import ApiError from "@/lib/api/handlers/api-error";
 
 type HeadersInit = Record<string, string> | [string, string][] | Headers;
-const API_BASE_URL: string = env.VITE_BACKEND_API_BASE_URL;
+type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+type RequestBody = Record<string, unknown> | FormData;
 
 /**
  * A service for handling API requests.
  *
- * - Automatically includes authentication headers.
+ * - Automatically includes authentication headers if a token is provided.
  * - Provides methods for common HTTP operations (GET, POST, PUT, PATCH, DELETE).
  * - Handles errors and throws `ApiError` when requests fail.
  */
 export default class ApiService {
+  private readonly baseUrl: string;
+  private readonly token: string | null;
+
+  constructor(baseUrl: string, token: string | null) {
+    this.baseUrl = baseUrl;
+    this.token = token;
+  }
+
   /**
-   * Creates HTTP headers, including the Authorization token if required.
+   * Creates HTTP headers, including the Authorization token if provided and not bypassed.
    *
    * @param {HeadersInit} [customHeaders={}] - Additional custom headers.
    * @param {boolean} [byPass=false] - If true, bypasses authentication headers.
-   * @returns {HeadersInit} The constructed headers.
+   * @returns {Headers} The constructed headers.
+   * @throws {ApiError} If token is null and byPass is false (protected route).
    */
   private createHeaders(
     customHeaders: HeadersInit = {},
-    byPass = false,
-  ): HeadersInit {
-    const headers: HeadersInit = { ...customHeaders };
+    byPass: boolean = false,
+  ): Headers {
+    const headers = new Headers(customHeaders);
 
     if (!byPass) {
-      const token = getAuthToken();
-
-      if (token) {
-        (headers as Record<string, string>)["Authorization"] =
-          `Bearer ${token}`;
+      if (!this.token) {
+        throw new ApiError(
+          "Authentication token is required for this request",
+          401,
+          undefined,
+          null,
+        );
       }
+      headers.set("Authorization", `Bearer ${this.token}`);
     }
 
     return headers;
@@ -42,54 +53,64 @@ export default class ApiService {
    * Makes an HTTP request and handles responses.
    *
    * @template T - The expected response type.
-   * @param {"GET" | "POST" | "PUT" | "PATCH" | "DELETE"} method - HTTP method.
+   * @param {HttpMethod} method - HTTP method.
    * @param {string} url - The endpoint URL.
    * @param {HeadersInit} [headers={}] - Custom headers.
-   * @param {Record<string, unknown> | FormData} [body] - Request body (optional).
+   * @param {RequestBody} [body] - Request body (optional).
    * @param {string} [customErrorMessage] - Custom error message if request fails.
    * @param {boolean} [byPass=false] - If true, bypass authentication headers.
    * @returns {Promise<T>} The parsed JSON response.
-   * @throws {ApiError} Throws an `ApiError` if the request fails.
+   * @throws {ApiError} Throws an `ApiError` if the request fails or token is missing for protected routes.
    */
   private async request<T>(
-    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+    method: HttpMethod,
     url: string,
     headers: HeadersInit = {},
-    body?: Record<string, unknown> | FormData,
+    body?: RequestBody,
     customErrorMessage?: string,
-    byPass = false,
+    byPass: boolean = false,
   ): Promise<T> {
+    const requestHeaders = this.createHeaders(headers, byPass);
+    const isJsonBody = body && !(body instanceof FormData);
+
+    if (isJsonBody) {
+      requestHeaders.set("Content-Type", "application/json");
+    }
+
     const options: RequestInit = {
       method,
-      headers: this.createHeaders(headers, byPass),
+      headers: requestHeaders,
+      ...(body && {
+        body: isJsonBody ? JSON.stringify(body) : body,
+      }),
     };
 
-    if (["POST", "PUT", "PATCH"].includes(method) && body) {
-      if (body instanceof FormData) {
-        options.body = body;
-      } else {
-        options.body = JSON.stringify(body);
-        (options.headers as Record<string, string>)["Content-Type"] =
-          "application/json";
+    try {
+      const response = await fetch(`${this.baseUrl}${url}`, options);
+
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        const backendErrorMessage =
+          errorBody.message ||
+          errorBody.error ||
+          errorBody.detail ||
+          "Unknown error";
+        const errorMessage = customErrorMessage ?? backendErrorMessage;
+
+        throw new ApiError(errorMessage, response.status, errorBody, response);
       }
+
+      return response.json() as Promise<T>;
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+
+      throw new ApiError(
+        customErrorMessage ?? "Network error occurred",
+        0,
+        undefined,
+        null,
+      );
     }
-
-    const response = await fetch(`${API_BASE_URL}${url}`, options);
-
-    if (!response.ok) {
-      const errorBody = await response.json().catch(() => ({}));
-      const backendErrorMessage =
-        errorBody.message ||
-        errorBody.error ||
-        errorBody.detail ||
-        "Unknown error";
-
-      const errorMessage = customErrorMessage ?? backendErrorMessage;
-
-      throw new ApiError(errorMessage, response.status, errorBody, response);
-    }
-
-    return response.json() as Promise<T>;
   }
 
   /**
@@ -102,11 +123,11 @@ export default class ApiService {
    * @param {boolean} [byPass=false] - If true, bypass authentication headers.
    * @returns {Promise<T>} The parsed JSON response.
    */
-  get<T>(
+  public get<T>(
     url: string,
     headers: HeadersInit = {},
     customErrorMessage?: string,
-    byPass = false,
+    byPass: boolean = false,
   ): Promise<T> {
     return this.request(
       "GET",
@@ -124,17 +145,17 @@ export default class ApiService {
    * @template T - The expected response type.
    * @param {string} url - The endpoint URL.
    * @param {HeadersInit} [headers={}] - Custom headers.
-   * @param {Record<string, unknown> | FormData} [body] - Request body.
+   * @param {RequestBody} [body] - Request body.
    * @param {string} [customErrorMessage] - Custom error message if request fails.
    * @param {boolean} [byPass=false] - If true, bypass authentication headers.
    * @returns {Promise<T>} The parsed JSON response.
    */
-  post<T>(
+  public post<T>(
     url: string,
     headers: HeadersInit = {},
-    body?: Record<string, unknown> | FormData,
+    body?: RequestBody,
     customErrorMessage?: string,
-    byPass = false,
+    byPass: boolean = false,
   ): Promise<T> {
     return this.request("POST", url, headers, body, customErrorMessage, byPass);
   }
@@ -145,17 +166,17 @@ export default class ApiService {
    * @template T - The expected response type.
    * @param {string} url - The endpoint URL.
    * @param {HeadersInit} [headers={}] - Custom headers.
-   * @param {Record<string, unknown> | FormData} [body] - Request body.
+   * @param {RequestBody} [body] - Request body.
    * @param {string} [customErrorMessage] - Custom error message if request fails.
    * @param {boolean} [byPass=false] - If true, bypass authentication headers.
    * @returns {Promise<T>} The parsed JSON response.
    */
-  put<T>(
+  public put<T>(
     url: string,
     headers: HeadersInit = {},
-    body?: Record<string, unknown> | FormData,
+    body?: RequestBody,
     customErrorMessage?: string,
-    byPass = false,
+    byPass: boolean = false,
   ): Promise<T> {
     return this.request("PUT", url, headers, body, customErrorMessage, byPass);
   }
@@ -166,17 +187,17 @@ export default class ApiService {
    * @template T - The expected response type.
    * @param {string} url - The endpoint URL.
    * @param {HeadersInit} [headers={}] - Custom headers.
-   * @param {Record<string, unknown> | FormData} [body] - Request body.
+   * @param {RequestBody} [body] - Request body.
    * @param {string} [customErrorMessage] - Custom error message if request fails.
    * @param {boolean} [byPass=false] - If true, bypass authentication headers.
    * @returns {Promise<T>} The parsed JSON response.
    */
-  patch<T>(
+  public patch<T>(
     url: string,
     headers: HeadersInit = {},
-    body?: Record<string, unknown> | FormData,
+    body?: RequestBody,
     customErrorMessage?: string,
-    byPass = false,
+    byPass: boolean = false,
   ): Promise<T> {
     return this.request(
       "PATCH",
@@ -198,11 +219,11 @@ export default class ApiService {
    * @param {boolean} [byPass=false] - If true, bypass authentication headers.
    * @returns {Promise<T>} The parsed JSON response.
    */
-  delete<T>(
+  public delete<T>(
     url: string,
     headers: HeadersInit = {},
     customErrorMessage?: string,
-    byPass = false,
+    byPass: boolean = false,
   ): Promise<T> {
     return this.request(
       "DELETE",

@@ -33,7 +33,14 @@ export default function PageComponent() {
     },
     options: {
       onSuccess: ({ name }) => {
-        toast.success(`The user ${name} was created`);
+        toast(`Hello ${name} was created`, {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       },
       onError: (error) => {
         toast.error(error.message);
