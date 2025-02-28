@@ -13,7 +13,7 @@ const API_BASE_URL: string = env.VITE_BACKEND_API_BASE_URL;
  */
 export default class BaseController {
   /** An instance of `ApiService` for making API requests. */
-  protected readonly apiService: ApiService;
+  public readonly apiService: ApiService;
 
   /**
    * Initializes a new instance of `BaseController`.

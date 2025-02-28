@@ -1,7 +1,7 @@
-import BaseController from "@/lib/api/controllers/main/base-controller";
+import ControllerWithoutAuth from "@/lib/api/controllers/main/controller-without-auth";
 import type { Posts } from "@/types";
 
-export default class PostController extends BaseController {
+export default class PostController extends ControllerWithoutAuth {
   constructor() {
     super();
   }

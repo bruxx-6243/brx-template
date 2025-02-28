@@ -1,19 +1,19 @@
-import ApiService from "@/lib/api/services";
+import ControllerWithoutAuth from "@/lib/api/controllers/main/controller-without-auth";
 import { beforeAll, describe, expect, expectTypeOf, test } from "vitest";
 
 const BEFORE_ALL_TIMEOUT = 30000;
 const url = "/posts";
 
-const apiService = new ApiService();
+const controller = new ControllerWithoutAuth();
 
 describe("JSONPlaceholder API tests", () => {
   let getBody: Array<{ [key: string]: unknown }>;
   let postBody: { [key: string]: unknown };
 
   beforeAll(async () => {
-    getBody = await apiService.get(url);
+    getBody = await controller.apiService.get(url);
 
-    postBody = await apiService.post(url, undefined, {
+    postBody = await controller.apiService.post(url, undefined, {
       title: "foo",
       body: "bar",
       userId: 1,
