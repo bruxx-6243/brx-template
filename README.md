@@ -25,10 +25,8 @@ The CLI sets up the directory, installs dependencies, and initializes Git.
 cd my-app
 ```
 
-### Step 4: Configure Environment
-
-Copy `.env.example` to `.env` and adjust variables as needed:
+### Step 4: Start development server
 
 ```bash
-cp .env.example .env
+package run dev
 ```
