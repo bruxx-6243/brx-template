@@ -18,14 +18,15 @@ export default class BaseController {
   /**
    * Initializes a new instance of `BaseController`.
    *
-   * - Takes an optional token for authentication and passes it to `ApiService`.
+   * - Takes an optional token for authentication and a bypass flag to configure `ApiService`.
    * - Instantiates `ApiService` for API interactions.
    * - Automatically binds all methods of the class to ensure correct `this` context.
    *
    * @param {string | null} [token] - The authentication token, or null if not available.
+   * @param {boolean} byPass - If true, bypasses authentication; if false, requires a token.
    */
-  constructor(token: string | null = null) {
-    this.apiService = new ApiService(API_BASE_URL, token);
+  constructor(byPass: boolean, token: string | null = null) {
+    this.apiService = new ApiService(API_BASE_URL, token, byPass);
 
     Object.getOwnPropertyNames(Object.getPrototypeOf(this))
       // @ts-expect-error HACK: this warning can be ignored

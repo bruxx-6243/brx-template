@@ -1,4 +1,4 @@
-import BaseController from "@/lib/api/handlers/base-controller";
+import BaseController from "@/lib/api/controllers/main/base-controller";
 import type { Posts } from "@/types";
 
 export default class PostController extends BaseController {

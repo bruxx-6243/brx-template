@@ -1,4 +1,4 @@
-import BaseController from "@/lib/api/handlers/base-controller";
+import BaseController from "@/lib/api/controllers/main/base-controller";
 
 export default class AuthController extends BaseController {
   constructor() {
