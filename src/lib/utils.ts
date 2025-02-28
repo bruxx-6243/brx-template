@@ -9,8 +9,8 @@ export function sum(a: number, b: number) {
   return a + b;
 }
 
-export const getAuthToken = () => {
+export function getAuthToken() {
   const token = "token";
 
   return token;
-};
+}
