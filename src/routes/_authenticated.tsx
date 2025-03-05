@@ -7,6 +7,10 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
  * - Uses `<Outlet />` to render child routes inside it.
  */
 export const Route = createFileRoute("/_authenticated")({
+  beforeLoad({ context }) {
+    console.log("Hello world");
+    console.log(context);
+  },
   component: RouteComponent,
 });
 
