@@ -152,7 +152,7 @@ const useSEO = (props: PageSEOProps) => {
         }
       }
       if (validatedProps.title) {
-        document.title = "Your Default Title"; // Replace with your actual default title
+        document.title = "Your Default Title";
       }
     };
   }, [
