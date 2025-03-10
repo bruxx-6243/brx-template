@@ -10,7 +10,7 @@ export function sum(a: number, b: number) {
 }
 
 export function getAuthToken() {
-  const token = "token";
+  const token = "tk-token";
 
   return token;
 }
