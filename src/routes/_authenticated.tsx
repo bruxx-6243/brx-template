@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 /**
  * Defines the authenticated route layout.
@@ -8,9 +8,13 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
  */
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad({ context }) {
-    console.log("Hello world");
-    console.log(context);
+    if (!context.token) {
+      throw redirect({
+        to: "/auth/login",
+      });
+    }
   },
+
   component: RouteComponent,
 });
 
