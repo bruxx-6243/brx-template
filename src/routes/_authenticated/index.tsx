@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_authenticated/")({
 
 function RouteComponent() {
   useSEO({
-    title: "Home",
+    title: "Bruxx App With Convex",
     description: "Welcome to the home page",
   });
 

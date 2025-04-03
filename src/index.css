@@ -4,7 +4,3 @@
   --color-background: oklch(13.91% 0.006 354.68);
   --color-forground: oklch(100% 0 0);
 }
-
-body {
-  @apply bg-background text-forground;
-}
