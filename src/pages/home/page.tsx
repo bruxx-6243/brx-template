@@ -56,8 +56,7 @@ export default function PageComponent() {
       <Button />
 
       <div className="text-neutral-200">
-        start editing <code>src/components/pages/home/page.tsx</code> to see
-        changes
+        start editing <code>src/pages/home/page.tsx</code> to see changes
       </div>
 
       <Link to="/posts" className="text-white underline">

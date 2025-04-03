@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 /**
  * Defines the authenticated route layout.
@@ -7,6 +7,13 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
  * - Uses `<Outlet />` to render child routes inside it.
  */
 export const Route = createFileRoute("/_authenticated")({
+  beforeLoad({ context }) {
+    if (!context.token) {
+      throw redirect({
+        to: "/auth/login",
+      });
+    }
+  },
   component: RouteComponent,
 });
 

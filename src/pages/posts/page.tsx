@@ -1,13 +1,13 @@
 import { getAllPosts } from "@/lib/api/controllers/post-controller";
 import { createQueryMethod } from "@/lib/api/method";
 import { Link } from "@tanstack/react-router";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { useQueryState } from "nuqs";
 
 export default function PageComponent() {
-  const [limit, setLimit] = useQueryState(
-    "limit",
-    parseAsInteger.withDefault(1),
-  );
+  const [limit, setLimit] = useQueryState<number>("limit", {
+    defaultValue: 1,
+    parse: (value: string) => Number.parseInt(value, 10),
+  });
 
   const { data, isLoading, error } = createQueryMethod({
     key: ["posts", limit],
