@@ -1,8 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NuqsAdapter } from "nuqs/adapters/react";
 import type { PropsWithChildren } from "react";
+import { env } from "@/env";
+import { ConvexProvider, ConvexReactClient } from "convex/react";
 
 const queryClient = new QueryClient();
+
+const convex = new ConvexReactClient(env.VITE_CONVEX_URL);
 
 /**
  * Provides global context and services to the application.
@@ -21,7 +25,9 @@ export default function Providers({
 }: Readonly<PropsWithChildren>): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
-      <NuqsAdapter>{children}</NuqsAdapter>
+      <ConvexProvider client={convex}>
+        <NuqsAdapter>{children}</NuqsAdapter>
+      </ConvexProvider>
     </QueryClientProvider>
   );
 }

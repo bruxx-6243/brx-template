@@ -21,11 +21,14 @@ export const env = createEnv({
 
     /** The repository name for the client application. */
     VITE_REPO_NAME: z.string().optional(),
+
+    VITE_CONVEX_URL: z.string(),
   },
 
   runtimeEnv: {
     VITE_PORT: import.meta.env.VITE_PORT,
     VITE_REPO_NAME: import.meta.env.VITE_REPO_NAME,
+    VITE_CONVEX_URL: import.meta.env.VITE_CONVEX_URL,
     VITE_BACKEND_API_BASE_URL: import.meta.env.VITE_BACKEND_API_BASE_URL,
   },
 
