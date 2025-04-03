@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 export default function PageComponent() {
   const tasks = useQuery(api.tasks.get);
@@ -36,13 +37,19 @@ export default function PageComponent() {
                   isCompleted ? "cursor-not-allowed" : "cursor-pointer",
                 )}
                 disabled={isCompleted}
-                onClick={() => markTaskCompleted({ id: _id })}
+                onClick={() => {
+                  markTaskCompleted({ id: _id });
+                  toast.success("Task marked as completed");
+                }}
               >
                 ✅
               </button>
               <button
                 className="cursor-pointer"
-                onClick={() => deleteTaskMuation({ id: _id })}
+                onClick={() => {
+                  deleteTaskMuation({ id: _id });
+                  toast.success("Task deleted");
+                }}
               >
                 ❌
               </button>
@@ -63,6 +70,7 @@ export default function PageComponent() {
             text: task.text.trim(),
           });
           setTask({ text: "", isCompleted: false });
+          toast.success(`Task created with`);
         }}
       >
         <input
