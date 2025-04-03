@@ -7,71 +7,37 @@ import {
 import { ZodTypeAny } from "zod";
 
 // Type Definitions
-/**
- * Type definition for a function that returns a promise of a specific type.
- * @template T The type of the data returned from the query.
- */
 type QueryFunction<T> = () => Promise<T>;
-
-/**
- * Type definition for a function that accepts variables and returns a promise of a specific type.
- * @template T The type of the data returned from the mutation.
- * @template V The type of the variables passed to the mutation function.
- */
 type MutationFunction<T, V> = (variables: V) => Promise<T>;
 
-// Options Interfaces
-/**
- * Options for creating a query method.
- * @template T The type of the data returned from the query.
- * @template S The optional Zod schema used to validate the query result.
- */
-interface CreateQueryOptions<T, S extends ZodTypeAny | undefined = undefined> {
-  /** An optional Zod schema used for validation of the query result */
-  schema?: S;
-  /** The key used to identify the query */
-  key: string | unknown[];
-  /** The function that performs the query */
-  fn: QueryFunction<T>;
-  /** Additional options for the query, such as caching, retries, etc */
-  options?: UseQueryOptions<T, Error>;
+// Updated Options Interfaces
+interface BaseQueryOptions<T> {
+  placeholderData?: (previousData: T | undefined) => T | undefined;
+  // Add other common options here that you want to support
 }
 
-/**
- * Options for creating a mutation method.
- * @template T The type of the data returned from the mutation.
- * @template V The type of the variables passed to the mutation function.
- * @template S The optional Zod schema used to validate the mutation result.
- */
+interface CreateQueryOptions<T, S extends ZodTypeAny | undefined = undefined> {
+  schema?: S;
+  key: string | unknown[];
+  fn: QueryFunction<T>;
+  options?: Omit<UseQueryOptions<T, Error, T, unknown[]>, "queryKey"> &
+    BaseQueryOptions<T>;
+}
+
 interface CreateMutationOptions<
   T,
   V = void,
   S extends ZodTypeAny | undefined = undefined,
 > {
-  /** An optional Zod schema used for validation of the mutation result */
   schema?: S;
-  /** The key used to identify the mutation */
   key: string | unknown[];
-  /** The function that performs the mutation */
   fn: MutationFunction<T, V>;
-  /** Additional options for the mutation, such as error handling, retries, etc */
   options?: UseMutationOptions<T, Error, V>;
 }
 
-// Utility Functions
 const normalizeQueryKey = (key: string | unknown[]): unknown[] =>
   Array.isArray(key) ? key : [key];
 
-// Query Factory
-/**
- * Creates a query method using React Query's `useQuery` hook.
- *
- * @template T The type of the data returned from the query.
- * @template S The optional Zod schema used to validate the query result.
- *
- * @param options The options to configure the query method.
- * @returns An object containing a hook to be used in a component.
- */
 function createQueryMethod<T, S extends ZodTypeAny | undefined = undefined>({
   schema,
   key,
@@ -92,17 +58,6 @@ function createQueryMethod<T, S extends ZodTypeAny | undefined = undefined>({
   return { useHook: useQueryHook };
 }
 
-// Mutation Factory
-/**
- * Creates a mutation method using React Query's `useMutation` hook.
- *
- * @template T The type of the data returned from the mutation.
- * @template V The type of the variables passed to the mutation function.
- * @template S The optional Zod schema used to validate the mutation result.
- *
- * @param options The options to configure the mutation method.
- * @returns An object containing a hook to be used in a component.
- */
 function createMutationMethod<
   T,
   V = void,

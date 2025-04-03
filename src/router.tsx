@@ -18,8 +18,11 @@ export const router = createRouter({
   basepath,
   routeTree,
   context: { token: null },
-  defaultPendingComponent: () => <div>Loading...</div>,
-  defaultErrorComponent: ({ error }) => <div>Error: {error.message}</div>,
+  defaultErrorComponent: ({ error }) => (
+    <div className="flex min-h-screen items-center justify-center">
+      <span>Error: {error.message}</span>
+    </div>
+  ),
   defaultPreload: "intent",
   scrollRestoration: true,
 });
